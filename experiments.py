@@ -17,7 +17,8 @@ import time
 
 import matplotlib.pyplot as plt
 
-from sorting import hybrid_sort, merge_sort, generate_data
+from hybrid_sort import hybrid_sort, generate_data
+from merge_sort import merge_sort
 
 
 RESULTS_DIR = "results"

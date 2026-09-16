@@ -6,11 +6,16 @@ compared against a plain merge sort.
 
 ## Files
 
-- [`sorting.py`](sorting.py) — the algorithms: `hybrid_sort`,
-  `merge_sort`, their shared `merge`/`insertion_sort` helpers, and
-  `generate_data` for producing random test arrays. Each sort returns
-  the number of key comparisons it performed. Run directly
-  (`python sorting.py`) for a quick correctness self-test.
+- [`hybrid_sort.py`](hybrid_sort.py) — `hybrid_sort`, its
+  `insertion_sort`/`merge` helpers, and `generate_data` for producing
+  random test arrays. Returns the number of key comparisons performed.
+  Run directly (`python hybrid_sort.py`) for a quick correctness
+  self-test.
+- [`merge_sort.py`](merge_sort.py) — the plain `merge_sort`, standalone
+  (no dependency on `hybrid_sort.py`), using the same `merge()` logic
+  and comparison-counting convention so the two are directly
+  comparable. Run directly (`python merge_sort.py`) for a quick
+  correctness self-test.
 - [`experiments.py`](experiments.py) — all experiments, each writing
   its output into `results/`:
   - `n_sweep` — key comparisons vs. input size `n`, for a fixed `S`.

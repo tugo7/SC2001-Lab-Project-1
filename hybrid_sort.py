@@ -85,23 +85,6 @@ def hybrid_sort(arr, left, right, S):
     return comparisons
 
 
-def merge_sort(arr, left, right):
-    """Plain merge sort - always recurses down to single elements.
-
-    Returns the number of key comparisons performed.
-    """
-    if left >= right:
-        return 0
-
-    mid = (left + right) // 2
-
-    comparisons = merge_sort(arr, left, mid)
-    comparisons += merge_sort(arr, mid + 1, right)
-    comparisons += merge(arr, left, mid, right)
-
-    return comparisons
-
-
 def generate_data(n, x):
     """Generates n random integers drawn uniformly from [1, x]."""
     return [random.randint(1, x) for _ in range(n)]
@@ -111,14 +94,8 @@ if __name__ == "__main__":
     random.seed(1)
     data = generate_data(5000, 100_000)
 
-    hybrid_copy = data.copy()
-    hybrid_comparisons = hybrid_sort(hybrid_copy, 0, len(hybrid_copy) - 1, 16)
-    assert hybrid_copy == sorted(data), "hybrid_sort produced an incorrect ordering"
+    test = data.copy()
+    comparisons = hybrid_sort(test, 0, len(test) - 1, 16)
+    assert test == sorted(data), "hybrid_sort produced an incorrect ordering"
 
-    merge_copy = data.copy()
-    merge_comparisons = merge_sort(merge_copy, 0, len(merge_copy) - 1)
-    assert merge_copy == sorted(data), "merge_sort produced an incorrect ordering"
-
-    print(f"Self-test passed (n={len(data):,}):")
-    print(f"  hybrid_sort (S=16): {hybrid_comparisons:,} comparisons")
-    print(f"  merge_sort:         {merge_comparisons:,} comparisons")
+    print(f"Self-test passed (n={len(data):,}, S=16): {comparisons:,} comparisons")
