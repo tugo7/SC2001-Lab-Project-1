@@ -1,0 +1,3 @@
+algorithm,n,S,comparisons,cpu_time_seconds
+hybrid_sort,10000000,24,242307872,47.034827499999665
+merge_sort,10000000,,220099725,52.890083875041455

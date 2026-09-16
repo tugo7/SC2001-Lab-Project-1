@@ -99,60 +99,61 @@ def generate_data(n, x):
 # ----------------------------------------------------
 # Part C(i): keep S fixed and increase input size n
 # ----------------------------------------------------
+# Guarded by __main__ so this module can be safely imported elsewhere
+# (e.g. by the Part c(iii)/d experiment scripts) without re-running the
+# whole experiment and blocking on plt.show() as a side effect.
+if __name__ == "__main__":
+    S = 10
+    x = 10_000_000
 
-S = 10
-x = 10_000_000
+    # Input sizes tested from 1,000 to 10 million
+    sizes = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
 
-# Input sizes tested from 1,000 to 10 million
-sizes = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
+    # Same seed so the experiment can be reproduced
+    random.seed(42)
 
-# Same seed so the experiment can be reproduced
-random.seed(42)
+    results = []
 
-results = []
+    for n in sizes:
+        arr = generate_data(n, x)
 
-for n in sizes:
-    arr = generate_data(n, x)
+        comparisons = hybrid_sort(arr, 0, len(arr) - 1, S)
 
-    comparisons = hybrid_sort(arr, 0, len(arr) - 1, S)
+        # Store comparison count for graphing later
+        results.append(comparisons)
 
-    # Store comparison count for graphing later
-    results.append(comparisons)
+        print("n =", n, "| Key comparisons =", comparisons)
 
-    print("n =", n, "| Key comparisons =", comparisons)
+    # n log2(n) reference to compare theoretical growth
+    theoretical = [n * math.log2(n) for n in sizes]
 
+    # Plot empirical results against theoretical n log n growth
+    plt.plot(
+        sizes,
+        results,
+        marker="o",
+        label="Empirical key comparisons"
+    )
 
-# n log2(n) reference to compare theoretical growth
-theoretical = [n * math.log2(n) for n in sizes]
+    plt.plot(
+        sizes,
+        theoretical,
+        marker="o",
+        linestyle="--",
+        label="n log2(n) reference"
+    )
 
+    # Log scale makes the large range of n easier to see
+    plt.xscale("log")
 
-# Plot empirical results against theoretical n log n growth
-plt.plot(
-    sizes,
-    results,
-    marker="o",
-    label="Empirical key comparisons"
-)
+    plt.xlabel("Input Size n")
+    plt.ylabel("Number of Key Comparisons")
+    plt.title("Hybrid Sort: Empirical vs n log2(n) Growth (S = 10)")
 
-plt.plot(
-    sizes,
-    theoretical,
-    marker="o",
-    linestyle="--",
-    label="n log2(n) reference"
-)
+    plt.legend()
+    plt.grid()
 
-# Log scale makes the large range of n easier to see
-plt.xscale("log")
+    # Save graph so we can use it in the presentation
+    plt.savefig("comparisons_vs_n.png")
 
-plt.xlabel("Input Size n")
-plt.ylabel("Number of Key Comparisons")
-plt.title("Hybrid Sort: Empirical vs n log2(n) Growth (S = 10)")
-
-plt.legend()
-plt.grid()
-
-# Save graph so we can use it in the presentation
-plt.savefig("comparisons_vs_n.png")
-
-plt.show()
+    plt.show()
